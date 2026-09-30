@@ -41,23 +41,22 @@ This document provides guidelines for AI agents contributing to this repository.
   ```
 
   On Windows, install and use the PowerShell notification support from
-  BurntToast:
+  BurntToast. Run the setup once in a regular PowerShell terminal:
 
   ```powershell
-  if (-not (Get-Module -ListAvailable -Name BurntToast)) {
-    Install-Module -Name BurntToast -Scope CurrentUser -Force
-  }
-  Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
-  Import-Module BurntToast
-  New-BurntToastNotification `
-    -Text "Question from Coding Agent", `
-    "Please clarify how to complete the testing task."
+  Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 `
+    -Scope CurrentUser -Force -Confirm:$false
+  Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+  Install-Module -Name BurntToast -Scope CurrentUser -Force `
+    -AllowClobber -Confirm:$false
   ```
 
-  The installation may require network access and confirmation to install the
-  NuGet provider. If BurntToast cannot be installed, use another notification
-  method supported by the current environment rather than running a
-  Linux-only command.
+  ```powershell
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -Command `
+    "Import-Module BurntToast; `
+    New-BurntToastNotification -Text 'Question from Coding Agent', `
+    'Please clarify how to complete the testing task.'"
+  ```
 
 - The user wants a desktop notification whenever I ask a question and when a
   task is complete. Use the platform-specific command above as appropriate.
